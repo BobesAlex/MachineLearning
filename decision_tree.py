@@ -17,7 +17,7 @@ my_data=[['slashdot','USA','yes',18,'None'],
         
 def divideset(rows,column,value):
    split_function=None
-   if isinstance(value,int) or isinstance(value,float): # check if the value is a number i.e int or float
+   if isinstance(value,int) or isinstance(value,float): 
       split_function=lambda row:row[column]>=value
    else:
       split_function=lambda row:row[column]==value
@@ -43,7 +43,6 @@ def entropy(rows):
    from math import log
    log2=lambda x:log(x)/log(2)  
    results=uniquecounts(rows)
-   # Now calculate the entropy
    ent=0.0
    for r in results.keys():
       p=float(results[r])/len(rows)
@@ -60,9 +59,8 @@ class decisionnode:
     self.results=results
     self.tb=tb
     self.fb=fb
-    def buildtree(rows,scoref=entropy): #rows is the set, either whole dataset or part of it in the recursive call, 
-                                    #scoref is the method to measure heterogeneity. By default it's entropy.
-  if len(rows)==0: return decisionnode() #len(rows) is the number of units in a set
+    def buildtree(rows,scoref=entropy):
+  if len(rows)==0: return decisionnode() 
   current_score=scoref(rows)
 
   best_gain=0.0
@@ -76,12 +74,12 @@ class decisionnode:
     column_values={}            
     for row in rows:
        column_values[row[col]]=1   
-    for value in column_values.keys(): #the 'values' here are the keys of the dictionnary
-      (set1,set2)=divideset(rows,col,value) #define set1 and set2 as the 2 children set of a division
+    for value in column_values.keys(): 
+      (set1,set2)=divideset(rows,col,value) 
     
-      p=float(len(set1))/len(rows) #p is the size of a child set relative to its parent
-      gain=current_score-p*scoref(set1)-(1-p)*scoref(set2) #cf. formula information gain
-      if gain>best_gain and len(set1)>0 and len(set2)>0: #set must not be empty
+      p=float(len(set1))/len(rows) 
+      gain=current_score-p*scoref(set1)-(1-p)*scoref(set2) 
+      if gain>best_gain and len(set1)>0 and len(set2)>0:
         best_gain=gain
         best_criteria=(col,value)
         best_sets=(set1,set2)
